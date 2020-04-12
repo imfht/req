@@ -54,7 +54,15 @@ func (r *Resp) ToBytes() ([]byte, error) {
 		return r.respBody, nil
 	}
 	defer r.resp.Body.Close()
-	respBody, err := ioutil.ReadAll(io.LimitReader(r.resp.Body, r.maxSize))
+	var (
+		respBody []byte
+		err      error
+	)
+	if r.maxSize > 0 {
+		respBody, err = ioutil.ReadAll(io.LimitReader(r.resp.Body, r.maxSize))
+	} else {
+		respBody, err = ioutil.ReadAll(r.resp.Body)
+	}
 	if err != nil {
 		r.err = err
 		return nil, err

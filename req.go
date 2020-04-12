@@ -111,6 +111,7 @@ type Req struct {
 	jsonEncOpts      *jsonEncOpts
 	xmlEncOpts       *xmlEncOpts
 	flag             int
+	MaxReadSize      int64
 	progressInterval time.Duration
 }
 
@@ -170,7 +171,7 @@ func (r *Req) Do(method, rawurl string, vs ...interface{}) (resp *Resp, err erro
 		ProtoMinor: 1,
 	}
 	resp = &Resp{req: req, r: r}
-
+	resp.maxSize = r.MaxReadSize
 	var queryParam param
 	var formParam param
 	var uploads []FileUpload
