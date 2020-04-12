@@ -23,6 +23,7 @@ type Resp struct {
 	reqBody          []byte
 	respBody         []byte
 	downloadProgress DownloadProgress
+	maxSize          int64 // max body size(in byte)
 	err              error // delayed error
 }
 
@@ -53,7 +54,7 @@ func (r *Resp) ToBytes() ([]byte, error) {
 		return r.respBody, nil
 	}
 	defer r.resp.Body.Close()
-	respBody, err := ioutil.ReadAll(r.resp.Body)
+	respBody, err := ioutil.ReadAll(io.LimitReader(r.resp.Body, r.maxSize))
 	if err != nil {
 		r.err = err
 		return nil, err
