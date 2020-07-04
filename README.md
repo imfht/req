@@ -7,7 +7,7 @@ A golang http request library for humans
 
 Features
 ========
-
+- max_size support.
 - Light weight
 - Simple
 - Easy play with JSON and XML
